@@ -7,7 +7,7 @@ require './constants'
 
 class KeyManager
   def initialize
-    @redis = Redis.new(url: ENV['REDIS_URL'] || 'redis://localhost:6379')
+    @redis = RedisClient.new.connection
   end
 
   def generate_key
