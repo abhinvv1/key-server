@@ -90,6 +90,13 @@ RSpec.describe ApiKeyServer do
       expect(response['message']).to eq('Key deleted')
       expect(redis.exists?("api_key:#{@key}")).to be_falsey
     end
+
+    it 'returns a 404 error when trying to delete a non-existent key or bad key' do
+      delete '/keys', key: 'non_existent_key'
+      expect(last_response.status).to eq(404)
+      response = JSON.parse(last_response.body)
+      expect(response['error']).to eq('Key not found')
+    end
   end
 
   describe 'POST /keys/:key/keep_alive' do
