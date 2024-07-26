@@ -64,7 +64,7 @@ class KeyManager
   end
 
   def delete_key(key)
-    return false unless key
+    return false unless key && @redis.exists?("#{Constants::KEY_PREFIX}#{key}")
 
     @redis.multi do |multi|
       multi.del("#{Constants::KEY_PREFIX}#{key}")

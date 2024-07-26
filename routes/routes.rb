@@ -41,8 +41,12 @@ class Routes < Sinatra::Base
 
   delete '/keys' do
     key = params[:key]
-    @key_manager.delete_key(key)
-    { message: 'Key deleted' }.to_json
+    if @key_manager.delete_key(key)
+      { message: 'Key deleted' }.to_json
+    else
+      status 404
+      { error: 'Key not found' }.to_json
+    end
   end
 
   post '/keys/:key/keep_alive' do
@@ -55,4 +59,3 @@ class Routes < Sinatra::Base
     end
   end
 end
-
